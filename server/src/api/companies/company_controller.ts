@@ -1,8 +1,7 @@
 import {Controller} from '../common/controller'
 import express from 'express'
-import {v4 as uuid} from 'uuid'
-import {get} from 'lodash'
 import {MessageDb} from '../../message_db'
+import {addCompany} from './add_company'
 
 export class CompanyController extends Controller {
   public path = '/companies'
@@ -16,38 +15,7 @@ export class CompanyController extends Controller {
     this.router.post(`${this.path}/addCompany`, this.addCompany)
   }
 
-  private addCompany = async (request: express.Request, response: express.Response) => {
-
-    const body = get(request, 'body')
-
-    const companyId = uuid()
-    const traceId = uuid()
-    const messageId = uuid()
-    const userId = uuid()
-
-
-
-    const streamName = `company:command-${companyId}`
-    const message = {
-      id: messageId,
-      type: 'AddCompany',
-      metadata: {
-        traceId,
-        userId,
-      },
-      data: {
-        companyId,
-        ...body,
-      },
-    }
-
-    await this.messageDb.write(streamName, message)
-
-    response.send({
-      streamName,
-      message,
-    })
-    
-  }
+  private addCompany = async (request: express.Request, response: express.Response) => response.send(
+    await addCompany(this.messageDb, request.body))
 
 }
