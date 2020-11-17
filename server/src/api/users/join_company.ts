@@ -7,8 +7,6 @@ export const joinCompany = async (viewDb, messageDb, body) => {
   const traceId = uuid()
   const messageId = uuid()
 
-  // verify userId/companyId are UUID
-
   const companyPromise = viewDb
     .then(client => client('companies')
       .where({id: companyId})
@@ -34,7 +32,7 @@ export const joinCompany = async (viewDb, messageDb, body) => {
     throw new Error(`User with ${userId} must exist`)
   }
 
-  if (!user.email_verified) {
+  if (!user.is_email_verified) {
     throw new Error(`User ${userId} must have verified email`)
   }
 
