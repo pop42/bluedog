@@ -1,0 +1,66 @@
+version: '3.6'
+services:
+
+  view_db:
+    image: postgres:13-alpine
+    restart: always
+#    uncomment the volumes for persistent data
+#    volumes:
+#      - ./databases/pg:/var/lib/postgresql/data
+    networks:
+      shared:
+        aliases:
+          - viewDb
+    environment:
+      POSTGRES_PASSWORD: ${VIEW_DB_PASSWORD}
+      POSTGRES_DB: 'view_db'
+    ports:
+      - "5432:5432"
+
+  message_db:
+    image: ethangarofolo/message-db:1.1.6
+#   uncomment the volumes for persistent data
+#    volumes:
+#      - ./databases/message_db:/data
+    networks:
+      shared:
+        aliases:
+          - messageDb
+    ports:
+      - "5433:5432"
+
+  server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.node
+      target: development
+    command: ["npm", "run", "debug:server"]
+    container_name: server
+    ports:
+      - ${API_SERVER_PORT}:${API_SERVER_PORT}
+    networks:
+      shared:
+        aliases:
+          - server
+    env_file:
+      - .env
+    volumes:
+      - './server/src:/var/build/server/src:delegated'
+      - './shared/src:/var/build/shared/src:delegated'
+    depends_on:
+      - view_db
+      - message_db
+
+#  adminer:
+#    image: adminer
+#    restart: always
+#    networks:
+#      shared:
+#        aliases:
+#          - adminer
+#    ports:
+#      - "8080:8080"
+
+networks:
+  shared:
+    driver: bridge

@@ -1,0 +1,32 @@
+{
+  "name": "bluedog",
+  "version": "1.0.0",
+  "description": "Our Awesome Thing",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint '**/*.ts' --fix",
+    "test": "npm run test -C server",
+    "start": "docker-compose up",
+    "stop": "docker-compose down",
+    "debug:server": "npm run debug -C server",
+    "docker:clean": "docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -a -q) --force",
+    "knex:make": "npm run knex:make -C server",
+    "rebuild": "docker-compose build --no-cache",
+    "postinstall": "npm install -C server"
+  },
+  "author": "Aaron Thomas and Barney Marispini",
+  "repository": "https://github.com/pop42/bluedog",
+  "license": "ISC",
+  "dependencies": {
+    "tslib": "2.0.3"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "4.5.0",
+    "@typescript-eslint/parser": "4.5.0",
+    "eslint": "7.12.0",
+    "eslint-config-prettier": "6.14.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "prettier": "2.1.2",
+    "typescript": "4.0.3"
+  }
+}
