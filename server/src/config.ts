@@ -10,7 +10,9 @@ import {companyComponent} from './components/companies/company_component'
 import {emailComponent} from './components/email/email_component'
 import {adminAggregator} from './aggregators/admin/admin_aggregator'
 import {companiesAggregator} from './aggregators/companies/companies_aggregator'
-import {AssetController} from './api/assets/asset_controller'
+import {VehicleController} from './api/assets/asset_controller'
+import {vehicleComponent} from './components/assets/vehicles/vehicles_component'
+import {vehiclesAggregator} from './aggregators/assets/vehicles/vehicles_aggregator'
 
 export const viewDbClient = createDbClient(env.viewDbConnectionString)
 export const messageDb = new MessageDb(env.messageDbConnectionString)
@@ -18,19 +20,21 @@ export const messageDb = new MessageDb(env.messageDbConnectionString)
 const controllers = [
   new CompanyController(viewDbClient, messageDb),
   new UserController(viewDbClient, messageDb),
-  new AssetController(viewDbClient, messageDb)
+  new VehicleController(viewDbClient, messageDb),
 ]
 
 export const aggregators = [
   usersAggregator,
   adminAggregator,
-  companiesAggregator
+  companiesAggregator,
+  vehiclesAggregator
 ]
 
 export const components = [
   companyComponent,
   userComponent,
   emailComponent,
+  vehicleComponent,
 ]
 
 export const apiServer = new Api(controllers).app

@@ -3,8 +3,8 @@ import express from 'express'
 import {MessageDb} from '../../message_db'
 import {addVehicle} from './add_vehicle'
 
-export class AssetController extends Controller {
-  public path = '/assets'
+export class VehicleController extends Controller {
+  public path = '/vehicles'
 
   constructor(private db, private messageDb: MessageDb) {
     super()

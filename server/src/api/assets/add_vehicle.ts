@@ -5,23 +5,22 @@ export const addVehicle = async (messageDb, body) => {
   const traceId = uuid()
   const messageId = uuid()
   const userId = uuid()
-  const assetId = uuid()
+  const vehicleId = uuid()
   const companyId = body.companyId
-  const assetType = 'Vehicle'
 
-  const streamName = `asset:command-${assetId}`
+
+  const streamName = `vehicle:command-${vehicleId}`
   const message = {
     id: messageId,
     type: 'AddVehicle',
     metadata: {
       traceId,
       userId,
-      assetId,
-      assetType,
+      vehicleId,
       companyId,
     },
     data: {
-      assetId, ...body,
+      vehicleId, ...body,
     },
   }
 
